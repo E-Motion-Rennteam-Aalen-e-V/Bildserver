@@ -10,7 +10,7 @@ Push (GitHub) → Action "Mirror to Codeberg" → Backup auf Codeberg
 
 ## Struktur
 
-- `uploads/` – alle Bilder (JPG, PNG, WebP, GIF; Dateiname `YYYY-MM-DD-<hash>-<name>.<ext>`)
+- `uploads/` – alle Bilder (JPG, PNG, WebP, GIF; Dateiname `<zeitstempel-ms>-<name>.<ext>`)
 - `.github/workflows/mirror-codeberg.yml` – Mirror bei jedem Push
 
 ## Einrichtung
