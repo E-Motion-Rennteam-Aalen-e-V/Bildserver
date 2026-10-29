@@ -1,0 +1,20 @@
+# Nur Bilder in uploads/ versionieren; Rohdaten/Temp ignorieren
+.DS_Store
+Thumbs.db
+*.tmp
+*.psd
+*.xcf
+*.raw
+*.cr2
+*.nef
+*.arw
+*.dng
+*.heic
+*.tif
+*.tiff
+*.bmp
+*.svg
+*.mp4
+*.mov
+.env*
+node_modules/
