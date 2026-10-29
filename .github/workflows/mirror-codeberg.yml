@@ -1,0 +1,38 @@
+name: Mirror to Codeberg
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["**"]
+  workflow_dispatch:
+
+concurrency:
+  group: mirror-codeberg
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to Codeberg
+        env:
+          CODEBERG_USERNAME: ${{ secrets.CODEBERG_USERNAME }}
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+          CODEBERG_REPO: ${{ vars.CODEBERG_REPO }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CODEBERG_TOKEN:-}" ] || [ -z "${CODEBERG_USERNAME:-}" ] || [ -z "${CODEBERG_REPO:-}" ]; then
+            echo "::error::Secrets CODEBERG_USERNAME/CODEBERG_TOKEN und Variable CODEBERG_REPO (z. B. owner/repo) setzen."
+            exit 1
+          fi
+          echo "::add-mask::$CODEBERG_TOKEN"
+          git remote add codeberg "https://${CODEBERG_USERNAME}:${CODEBERG_TOKEN}@codeberg.org/${CODEBERG_REPO}.git"
+          # Branches + Tags spiegeln (ohne GitHub-interne refs/pull/*)
+          for ref in $(git for-each-ref --format='%(refname:strip=3)' refs/remotes/origin | grep -v '^HEAD$'); do
+            git push codeberg "+refs/remotes/origin/${ref}:refs/heads/${ref}"
+          done
+          git push codeberg --tags --force
