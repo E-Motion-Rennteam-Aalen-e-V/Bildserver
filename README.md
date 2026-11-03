@@ -1,5 +1,7 @@
 # Bildserver – E-Motion Rennteam Aalen e.V.
 
+> ⚠️ AI-assisted – Die Anbindung dieses Bildservers an die Website wurde mit KI-Unterstützung (Claude) entwickelt und umgesetzt.
+
 Bilder-Repo für die Website. GitHub = Entwicklung/Auslieferung, Codeberg = automatisches Backup.
 
 ```
@@ -36,6 +38,28 @@ Details: `docs/bildserver.md` im Website-Repo.
    - Secret `CODEBERG_TOKEN` – Token aus Schritt 2
    - Variable `CODEBERG_REPO` – `<codeberg-owner>/<repo>`
 4. Actions → *Mirror to Codeberg* → *Run workflow* zum Testen.
+
+## Lokaler Ablauf (Bilder manuell hochladen)
+
+Bilder können direkt per Git in den Bildserver übertragen werden, ohne die CMS-Upload-Route zu nutzen.
+
+1. Repo klonen (einmalig):
+   ```powershell
+   git clone https://github.com/E-Motion-Rennteam-Aalen-e-V/Bildserver H:\Bildserver
+   ```
+2. Bilder in `H:\Bildserver\uploads\` ablegen.
+3. Skript ausführen:
+   ```powershell
+   cd H:\Bildserver
+   .\sync.ps1
+   ```
+   Das Skript prüft, ob Änderungen vorhanden sind, erstellt einen Commit mit Zeitstempel und pusht nach `main`.
+
+4. Die Raw-URL lautet dann:
+   ```
+   https://raw.githubusercontent.com/E-Motion-Rennteam-Aalen-e-V/Bildserver/main/uploads/<dateiname>
+   ```
+   Diese URL kann direkt in CMS-Feldern vom Typ „Bild" eingetragen werden.
 
 ## Hinweise
 
