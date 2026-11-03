@@ -1,5 +1,7 @@
 # Bildserver – E-Motion Rennteam Aalen e.V.
 
+> ⚠️ AI-assisted – Die Anbindung dieses Bildservers an die Website wurde mit KI-Unterstützung (Claude) entwickelt und umgesetzt.
+
 Bilder-Repo für die Website. GitHub = Entwicklung/Auslieferung, Codeberg = automatisches Backup.
 
 ```
