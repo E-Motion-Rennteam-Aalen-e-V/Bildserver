@@ -6,6 +6,11 @@ on:
   pull_request:
     paths: ["uploads/**", "tools/check_uploads.py"]
   workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"   # wöchentlich montags 06:00 UTC, prüft den Stand von main
+
+permissions:
+  contents: read
 
 jobs:
   check:
