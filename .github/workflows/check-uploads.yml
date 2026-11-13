@@ -1,0 +1,21 @@
+name: Check uploads
+
+on:
+  push:
+    paths: ["uploads/**", "tools/check_uploads.py"]
+  pull_request:
+    paths: ["uploads/**", "tools/check_uploads.py"]
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"   # wöchentlich montags 06:00 UTC, prüft den Stand von main
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Leere oder kaputte Bilder finden
+        run: python3 tools/check_uploads.py --history

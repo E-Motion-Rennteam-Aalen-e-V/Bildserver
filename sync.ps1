@@ -27,6 +27,16 @@ Set-Location $root
 # Vor dem Commit erst pullen, um Push-Konflikte mit CMS-Commits zu vermeiden
 Invoke-Git pull --rebase --autostash
 
+# Guard: leere Dateien (0 Byte) nie committen – sonst sind die Bilder auf der Website kaputt
+$empty = Get-ChildItem -Path (Join-Path $root 'uploads') -Recurse -File |
+    Where-Object { $_.Length -eq 0 -and $_.Name -ne '.gitkeep' -and -not $_.Name.StartsWith('.') }
+if ($empty) {
+    Write-Host "Abbruch: $($empty.Count) leere Datei(en) in uploads/:" -ForegroundColor Red
+    $empty | ForEach-Object { Write-Host "  $($_.FullName)" -ForegroundColor Red }
+    Write-Host "Originale neu kopieren (oder Platzhalter/OneDrive-Dateien vorher laden) und erneut ausführen." -ForegroundColor Red
+    exit 1
+}
+
 Invoke-Git add uploads
 
 # Nur prüfen, ob uploads/ gestagede Änderungen hat (nicht andere Dateien im Repo)
